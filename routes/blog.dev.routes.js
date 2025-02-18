@@ -35,12 +35,16 @@ async function addArticle(req, res){
   image: image } = req.body;
  
  try {
-  //console.log("req.body", req.body)
+  /*
+  Image upload with multer and path under construction
+  For now console.log(req.body) to see data
+  */
+  console.log("image", req.body.image)
+     
   Article.create({
    title: title, 
    description: dsc, 
-   content: content,
-   image: image, 
+   content: content, 
   })
   res.send({message: 'Article added successfully'})
  } catch (error) {
