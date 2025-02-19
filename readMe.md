@@ -1,3 +1,9 @@
+## development
+- try and connect to this db from a local development version of the blog
+- try and get images from the local server using path
+- for now the file upload field should be a jpg image for just the title photo.
+- later we could integrate a system where the user can upload multiple files, and later in edit mode, position them at certain areas.
+
 ## technologies
 - Nginx (web server)
 - Pm2 (post manager 2) (this keeps the NodeJS --i.e. express-- application running)
