@@ -15,7 +15,8 @@ async function login(req, res) {
      password: _password 
  } = req.body;
  
-try {       
+try {    
+   
   const user = await VerifiedUser.findOne({ username: _username });   
     
   if (!user) return res.status(404).json({ ok: false, message: "Invalid credentials" });

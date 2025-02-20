@@ -4,24 +4,13 @@ require('express')
 require('dotenv').config();
 const app = express()
 const path = require("path");
-const multer = require("multer");
+
 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json());
 
 const cors = require('cors')
 app.use(cors());
-
-// Set up multer to store files in the "static" folder
-const storage = multer.diskStorage({
-  destination: path.join(__dirname, "static"),
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname); // Unique file name
-  }
-});
-
-const upload = multer({ storage });
-
 
 mongoose = require('mongoose');
 mongoose.set('debug',true)
@@ -49,15 +38,6 @@ app.use('/user-credentials', require('./routes/credentials.dev.routes.js'))
 
 // Serve static images
 app.use("/assets", express.static(path.join(__dirname, "static")));
-
-// Route to handle file uploads
-app.post("/upload", upload.single("image"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
-  res.json({ url: `/assets/${req.file.filename}` });
-});
-
 
 const PORT = process.env.PORT || 4040;
 app.listen(PORT, () => {console.log(`Server is running on ${PORT}`);});

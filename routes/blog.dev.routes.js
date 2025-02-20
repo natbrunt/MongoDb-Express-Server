@@ -3,6 +3,18 @@ const express     = require('express'),
 
 const Article = require("../models/Article") 
 
+const path = require("path");
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, "../static"),
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + "-" + file.originalname); // Unique file name
+    }
+  });
+  
+  const upload = multer({ storage });
+
 //get all
 async function getArticles(req, res){
  try{
@@ -32,21 +44,31 @@ async function addArticle(req, res){
   title: title, 
   description: dsc, 
   content: content,
-  image: image } = req.body;
- 
+  } = req.body;
+  
  try {
-  /*
-  Image upload with multer and path under construction
-  For now console.log(req.body) to see data
-  */
-  console.log("image", req.body.image)
-     
-  Article.create({
-   title: title, 
-   description: dsc, 
-   content: content, 
-  })
-  res.send({message: 'Article added successfully'})
+    console.log('Files:', req.files); // Uploaded files
+    if(req.files.length > 0)
+    {
+        //for now images cannot contain spaces
+        image_name = `assets/${req.files[0].filename}`;
+        Article.create({
+            title: title, 
+            description: dsc, 
+            content: content,
+            image: image_name
+           }) 
+        res.send({message:"Article created successfully, image upload successful"})
+         
+    }else{
+       Article.create({
+        title: title, 
+        description: dsc, 
+        content: content,
+       }) 
+       res.send({message:"Article created successfully"})
+    }
+
  } catch (error) {
     console.log(error)
     res.send({error})
@@ -54,8 +76,8 @@ async function addArticle(req, res){
 }
 
 router.get('/getArticles', getArticles);
+router.post('/addArticle', upload.any(), addArticle)
 router.get('/getArticle/:id', getArticle);
-router.post('/addArticle', addArticle);
 
 
 module.exports = router;
