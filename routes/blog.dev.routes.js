@@ -44,6 +44,7 @@ async function addArticle(req, res){
   title: title, 
   description: dsc, 
   content: content,
+  preview: preview
   } = req.body;
   
  try {
@@ -56,7 +57,8 @@ async function addArticle(req, res){
             title: title, 
             description: dsc, 
             content: content,
-            image: image_name
+            image: image_name,
+            preview: preview
            }) 
         res.send({message:"Article created successfully, image upload successful"})
          
@@ -65,6 +67,7 @@ async function addArticle(req, res){
         title: title, 
         description: dsc, 
         content: content,
+        preview: preview
        }) 
        res.send({message:"Article created successfully"})
     }
